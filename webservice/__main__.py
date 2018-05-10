@@ -18,12 +18,19 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 
 
 @router.register("pull_request", action="closed")
-async def issue_opened_event(event, gh, *args, **kwargs):
+async def pr_closed(event, gh, *args, **kwargs):
     """ Whenever an issue is opened, greet the author and say thanks."""
     url = event.data['pull_request']['url']
     author = event.data["pull_request"]["user"]["login"]
     message = f'Thanks for the PR @{author}!'
     await gh.post(url, data={'body': message})
+
+
+@router.register("issue_comment", action="created")
+async def issue_comment_reaction(event, gh, *args, **kwargs):
+    url = event.data['comment']['url'] + '/reactions'
+    data = {'content': 'thumbsup'}
+    await gh.post(url, data=data, accept='application/vnd.github.squirrel-girl-preview+json')
 
 
 async def main(request):
