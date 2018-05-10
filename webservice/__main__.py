@@ -17,6 +17,15 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     await gh.post(url, data={'body': message})
 
 
+@router.register("pull_request", action="closed")
+async def issue_opened_event(event, gh, *args, **kwargs):
+    """ Whenever an issue is opened, greet the author and say thanks."""
+    url = event.data['pull_request']['url']
+    author = event.data["pull_request"]["user"]["login"]
+    message = f'Thanks for the PR @{author}!'
+    await gh.post(url, data={'body': message})
+
+
 async def main(request):
     # read the GitHub webhook payload
     body = await request.read()
