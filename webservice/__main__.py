@@ -29,7 +29,7 @@ async def pr_closed(event, gh, *args, **kwargs):
 @router.register("issue_comment", action="created")
 async def issue_comment_reaction(event, gh, *args, **kwargs):
     url = event.data['comment']['url'] + '/reactions'
-    data = {'content': 'thumbsup'}
+    data = {'content': 'laugh'}
     await gh.post(url, data=data, accept='application/vnd.github.squirrel-girl-preview+json')
 
 
