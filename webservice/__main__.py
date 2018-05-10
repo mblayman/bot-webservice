@@ -33,6 +33,13 @@ async def issue_comment_reaction(event, gh, *args, **kwargs):
     await gh.post(url, data=data, accept='application/vnd.github.squirrel-girl-preview+json')
 
 
+@router.register("issues", action="opened")
+async def label_issues(event, gh, *args, **kwargs):
+    url = event.data['issue']['url']
+    data = {'labels': ['needs review']}
+    await gh.patch(url, data=data, accept='application/vnd.github.squirrel-girl-preview+json')
+
+
 async def main(request):
     # read the GitHub webhook payload
     body = await request.read()
